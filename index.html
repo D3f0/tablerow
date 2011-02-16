@@ -2,21 +2,50 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
     <script src="jquery-1.5.min.js" type="text/javascript"></script>
-    <script src="tablerow.js" type="text/javascript"></script>
+    <style type="text/css" rel="stylehseet">
+        body {
+            font-family: "Verdana";
+
+        }
+
+    </style>
     <script type="text/javascript">
-    function tablerow() {
-        
+        if (!window.console) {
+            window.console = {};
+            window.console.log = function(){};
+        }
+        function borrar_fila(link){
+            var tabla = $(link).parents('table');
+            // Si hay más de 3 (cabecera, fila, fila agregar nueva fila)...
+            if ($(tabla).find('tr').length > 3) {
+                console.log('Borrando');
+                $(link).parents('tr').fadeOut(function () {
+                    $(this).remove();
+                });
+            } else {
+                alert("No se puede borrar la única fila");
 
-
-    }
-
+            }
+            return false;
+        }
 
     </script>
+    
+    
 </head>
 <body>
     <h1>Agregar filas</h1>
-    <a href="javascript:tablerow();">Hola</a>
     <table id="la_tabla">
+
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Sexo</th>
+                <th>Borrar</th>
+            </tr>
+            
+        </thead>
 
         <tbody>
             <tr>
@@ -34,13 +63,17 @@
                     <li><input type="radio" name="sex" value="m" /> Mujer</li>
                 </ul>
                 </td>
+                <td>
+                    <a href="borrar" onclick="return borrar_fila(this);">Borrar</a>
+                </td>
             </tr>
             <tr>
-                <td colspan="3">
+                <td colspan="3" class="agregar">
                     <a href=""  id="agregar_fila">Agregar una fila nueva</a>
                 </td>
 
             </tr>
+            
 
         </tbody>
     </table>
@@ -53,8 +86,11 @@
             console.log("Agregar fila a ", tabla);
             var anteulitmo = $(tabla).find('tr:last').prev();
             var html_interno = $(anteulitmo).html();
-            $(anteulitmo).after('<tr>'+ html_interno+ '</tr>');
-            $(tabla).find('tr:last').prev().find('input[type=text]').focus();
+            $(anteulitmo).after('<tr style="display: none">'+ html_interno+ '</tr>');
+            // Ahora con efecto
+            $(tabla).find('tr:last').prev().fadeIn('slow', function () {
+                $(this).find('input[type=text]').focus();
+            });
         });
      });
 </script>
